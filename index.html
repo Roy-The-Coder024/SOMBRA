@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Winston Landing</title>
+<style>
+:root {
+  --white: #ffffff;
+  --black: #050505;
+  --charcoal: #111111;
+  --gray: #7a7a7a;
+  --border: #dedede;
+  font-family: 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--black); color: var(--charcoal); }
+main { width: min(1200px, 95vw); margin: 0 auto 80px; }
+.panel { padding: clamp(48px, 8vw, 96px) clamp(32px, 6vw, 96px); display: flex; flex-direction: column; gap: 28px; }
+.panel-white { background: var(--white); color: var(--charcoal); }
+.panel-black { background: var(--black); color: var(--white); }
+.hero { align-items: center; gap: 32px; }
+.hero__logo img { width: 180px; height: auto; filter: grayscale(100%); }
+.hero__copy h1 { font-size: clamp(32px, 5vw, 48px); margin: 12px 0; line-height: 1.1; }
+.hero__copy .lede { font-size: 1.1rem; max-width: 640px; }
+.eyebrow { letter-spacing: 0.35em; font-size: 0.78rem; text-transform: uppercase; color: var(--gray); }
+.panel-black .eyebrow { color: #bdbdbd; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.btn { padding: 14px 32px; border: 2px solid var(--charcoal); text-decoration: none; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; color: var(--charcoal); }
+.note { font-size: 0.9rem; color: var(--gray); }
+.panel-black .btn { border-color: var(--white); color: var(--white); }
+.focus__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; align-items: start; }
+.focus__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 18px; }
+.focus__list li { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 12px; }
+.stats__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+.stat-label { font-size: 0.9rem; letter-spacing: 0.2em; color: var(--gray); }
+.stat-value { font-size: 2.4rem; font-weight: 600; margin: 6px 0; }
+.stat-note { color: var(--gray); }
+.waitlist { border-top: 1px solid var(--border); padding-top: 28px; display: flex; flex-direction: column; gap: 16px; }
+.waitlist label { font-size: 1.1rem; font-weight: 600; }
+.inputs { display: flex; gap: 12px; }
+.inputs input { flex: 1; padding: 14px 16px; border: 2px solid var(--charcoal); font-size: 1rem; }
+.inputs button { padding: 14px 24px; border: none; background: var(--charcoal); color: var(--white); letter-spacing: 0.2em; text-transform: uppercase; }
+.footer-note { color: #bbbbbb; }
+@media (max-width: 640px) {
+  .inputs { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+<main>
+  <section class="panel panel-white hero">
+    <div class="hero__logo">
+      <img src="data:image/jpeg;base64,$(cat /tmp/logo.b64)" alt="Winston Report" />
+    </div>
+    <div class="hero__copy">
+      <p class="eyebrow">INTELLIGENCE DROP</p>
+      <h1>Winston keeps Closers Consulting accountable to the numbers.</h1>
+      <p class="lede">Daily revenue, ROAS, closer output, and client health condensed into one signal so Roy moves with certainty.</p>
+      <div class="cta-row">
+        <a class="btn" href="#waitlist">Tap into the report</a>
+        <span class="note">Updated nightly at 2:00&nbsp;AM CST</span>
+      </div>
+    </div>
+  </section>
+  <section class="panel panel-black focus">
+    <div class="focus__grid">
+      <div>
+        <p class="eyebrow">WHAT YOU GET</p>
+        <h2>Pure signal: white page, black page, repeat.</h2>
+        <p>Every page alternates white/black just like the PDF. Zero fluff, just revenue flow, ad controls, closer heatmaps, and client retention risks.</p>
+      </div>
+      <ul class="focus__list">
+        <li><strong>Revenue Pulse</strong><span>Target vs actual, source mix, cash alerts.</span></li>
+        <li><strong>Closer Grid</strong><span>Calls, close rate, Marcus alerts before the leaks grow.</span></li>
+        <li><strong>Ads + Organic</strong><span>ROAS runway, creative fatigue pings, YouTube surges.</span></li>
+      </ul>
+    </div>
+  </section>
+  <section class="panel panel-white stats" id="waitlist">
+    <div class="stats__grid">
+      <div>
+        <p class="stat-label">Weekly Revenue</p>
+        <p class="stat-value">$87.4K</p>
+        <p class="stat-note">9% below target → volume fix underway.</p>
+      </div>
+      <div>
+        <p class="stat-label">Team Close Rate</p>
+        <p class="stat-value">18%</p>
+        <p class="stat-note">Baseline held while call volume dipped 14%.</p>
+      </div>
+      <div>
+        <p class="stat-label">Ad ROAS</p>
+        <p class="stat-value">2.8x</p>
+        <p class="stat-note">Three week decline flagged for creative refresh.</p>
+      </div>
+    </div>
+    <form class="waitlist">
+      <label for="email">Get the Winston Report drop</label>
+      <div class="inputs">
+        <input type="email" id="email" placeholder="you@domain.com" required />
+        <button type="submit">Request Access</button>
+      </div>
+      <p class="stat-note">We’ll reply within 24 hours with onboarding instructions.</p>
+    </form>
+  </section>
+  <section class="panel panel-black footer">
+    <h3>Designed for Roy. Sharpened nightly by Winston.</h3>
+    <p class="footer-note">Black &amp; white theme. Sharp corners only. Same energy as the internal PDF—now in HTML.</p>
+  </section>
+</main>
+</body>
+</html>
