@@ -1,115 +1,540 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- Micro-update: verified deploy hook 2026-03-04 -->
-<title>Winston Landing</title>
-<style>
-:root {
-  --white: #ffffff;
-  --black: #050505;
-  --charcoal: #111111;
-  --gray: #7a7a7a;
-  --border: #dedede;
-  font-family: 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--black); color: var(--charcoal); }
-main { width: min(1200px, 95vw); margin: 0 auto 80px; }
-.panel { padding: clamp(48px, 8vw, 96px) clamp(32px, 6vw, 96px); display: flex; flex-direction: column; gap: 28px; }
-.panel-white { background: var(--white); color: var(--charcoal); }
-.panel-black { background: var(--black); color: var(--white); }
-.hero { align-items: center; gap: 32px; }
-.hero__logo img { width: 180px; height: auto; filter: grayscale(100%); }
-.hero__copy h1 { font-size: clamp(32px, 5vw, 48px); margin: 12px 0; line-height: 1.1; }
-.hero__copy .lede { font-size: 1.1rem; max-width: 640px; }
-.eyebrow { letter-spacing: 0.35em; font-size: 0.78rem; text-transform: uppercase; color: var(--gray); }
-.panel-black .eyebrow { color: #bdbdbd; }
-.cta-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
-.btn { padding: 14px 32px; border: 2px solid var(--charcoal); text-decoration: none; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; color: var(--charcoal); }
-.note { font-size: 0.9rem; color: var(--gray); }
-.panel-black .btn { border-color: var(--white); color: var(--white); }
-.focus__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; align-items: start; }
-.focus__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 18px; }
-.focus__list li { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 12px; }
-.stats__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
-.stat-label { font-size: 0.9rem; letter-spacing: 0.2em; color: var(--gray); }
-.stat-value { font-size: 2.4rem; font-weight: 600; margin: 6px 0; }
-.stat-note { color: var(--gray); }
-.waitlist { border-top: 1px solid var(--border); padding-top: 28px; display: flex; flex-direction: column; gap: 16px; }
-.waitlist label { font-size: 1.1rem; font-weight: 600; }
-.inputs { display: flex; gap: 12px; }
-.inputs input { flex: 1; padding: 14px 16px; border: 2px solid var(--charcoal); font-size: 1rem; }
-.inputs button { padding: 14px 24px; border: none; background: var(--charcoal); color: var(--white); letter-spacing: 0.2em; text-transform: uppercase; }
-.footer-note { color: #bbbbbb; }
-@media (max-width: 640px) {
-  .inputs { flex-direction: column; }
-  .btn { width: 100%; text-align: center; }
-}
-</style>
-</head>
-<body>
-<main>
-  <section class="panel panel-white hero">
-    <div class="hero__logo">
-      <img src="data:image/jpeg;base64,$(cat /tmp/logo.b64)" alt="Winston Report" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CCG Command Dashboard — Mockup</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+      :root {
+        font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #f8fafc;
+        background: #050608;
+        --sidebar-bg: #0f111a;
+        --sidebar-border: rgba(148, 163, 184, 0.18);
+        --panel-bg: #0c111b;
+        --panel-border: rgba(148, 163, 184, 0.12);
+        --muted: #94a3b8;
+        --accent: #2ce0a0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #050608;
+        color: #f8fafc;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, rgba(44, 224, 160, 0.12), transparent 38%), #050608;
+      }
+
+      .sidebar {
+        background: var(--sidebar-bg);
+        border-right: 1px solid var(--sidebar-border);
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #f8fafc;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        border-radius: 12px;
+        background: #050608;
+        padding: 4px;
+      }
+
+      .search {
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: #191d2b;
+        padding: 8px 12px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .search svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .search input {
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        width: 100%;
+        font-size: 0.85rem;
+        outline: none;
+      }
+
+      .sidebar-section {
+        margin-top: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .section-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: rgba(148, 163, 184, 0.75);
+      }
+
+      .chevron {
+        font-size: 0.75rem;
+        color: rgba(148, 163, 184, 0.6);
+      }
+
+      .nav-item {
+        border: 1px solid transparent;
+        background: transparent;
+        border-radius: 10px;
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 12px 9px 16px;
+        position: relative;
+        min-height: 36px;
+      }
+
+      .nav-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 6px;
+        bottom: 6px;
+        width: 3px;
+        border-radius: 6px;
+        background: transparent;
+      }
+
+      .nav-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: currentColor;
+      }
+
+      .icon svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .icon.doc {
+        width: 16px;
+        height: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        border-radius: 4px;
+        position: relative;
+      }
+
+      .icon.doc::after {
+        content: "";
+        position: absolute;
+        inset: 4px 3px;
+        border-top: 1px solid rgba(148, 163, 184, 0.4);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+      }
+
+      .nav-item:hover {
+        color: #f8fafc;
+        background: rgba(148, 163, 184, 0.08);
+      }
+
+      .nav-item.active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .nav-item.active::before {
+        background: #ffffff;
+      }
+
+      .badge-pill {
+        background: #1d2232;
+        border-radius: 50px;
+        padding: 2px 8px;
+        font-size: 0.72rem;
+        color: #f8fafc;
+      }
+
+      .star {
+        color: #fbbf24;
+        font-size: 0.85rem;
+      }
+
+      .sparkle {
+        color: #60a5fa;
+        font-size: 0.85rem;
+      }
+
+      .list-item {
+        border: none;
+        background: transparent;
+        color: #f8fafc;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0 8px 4px;
+        font-size: 0.85rem;
+        text-transform: lowercase;
+      }
+
+      .badge-square {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        display: inline-block;
+      }
+
+      .badge-square.coral {
+        background: linear-gradient(135deg, #fb7185, #f97316);
+      }
+
+      .badge-square.red {
+        background: linear-gradient(135deg, #f43f5e, #ef4444);
+      }
+
+      .content {
+        background: transparent;
+        padding: 48px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .view {
+        display: none;
+        width: 100%;
+        height: 100%;
+      }
+
+      .view.active {
+        display: block;
+      }
+
+      .view.blank {
+        background: var(--panel-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: 28px;
+        flex: 1;
+        min-height: 520px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+      }
+
+      .org-chart {
+        background: var(--panel-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: 28px;
+        padding: 36px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+      }
+
+      .org-chart h1 {
+        margin-top: 0;
+        font-size: 1.6rem;
+        letter-spacing: 0.02em;
+      }
+
+      .org-chart-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+        margin-top: 20px;
+      }
+
+      .node {
+        background: #131a26;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 16px;
+        padding: 20px 28px;
+        min-width: 240px;
+        text-align: center;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+
+      .node .title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .node .role {
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      .connector {
+        width: 1px;
+        height: 54px;
+        background: rgba(84, 184, 255, 0.4);
+      }
+
+      @media (max-width: 900px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          flex-direction: row;
+          gap: 16px;
+          align-items: center;
+          border-right: none;
+          border-bottom: 1px solid var(--sidebar-border);
+        }
+
+        nav {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .content {
+          padding: 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="logo.png" alt="Leadwave logo" />
+          <span>Leadwave</span>
+        </div>
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"></circle>
+            <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line>
+          </svg>
+          <input type="text" placeholder="Search anything" disabled />
+        </label>
+
+        <div class="sidebar-section">
+          <div class="section-label">
+            <span class="chevron">⌃</span>
+            <span>Favorites</span>
+          </div>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon doc"></span>
+              <span>Winston Canvas</span>
+            </span>
+            <span class="star">★</span>
+          </button>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon doc"></span>
+              <span>Signal Boost</span>
+            </span>
+            <span class="star">★</span>
+          </button>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon doc"></span>
+              <span>CRM Meeting Template</span>
+            </span>
+            <span class="star">★</span>
+          </button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="section-label">
+            <span class="chevron">⌃</span>
+            <span>Records</span>
+          </div>
+          <button class="nav-item" data-view="home">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 11 12 4l8 7v9a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+                </svg>
+              </span>
+              <span>Dashboard</span>
+            </span>
+          </button>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 9a5 5 0 0 1 10 0v4.8l1.8 2.7H5.2L7 13.8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+                  <path d="M10 18.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+              </span>
+              <span>Notifications</span>
+            </span>
+            <span class="badge-pill">12</span>
+          </button>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="5" y="6" width="14" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                  <path d="m8.5 12 2.5 2.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </span>
+              <span>Tasks</span>
+            </span>
+          </button>
+          <button class="nav-item" data-view="org-chart">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 6V3M12 6v6M6 15h12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                  <circle cx="12" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+                  <circle cx="6" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+                  <circle cx="18" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+                </svg>
+              </span>
+              <span>Org Chart</span>
+            </span>
+          </button>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 7.5h14v9H5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+                  <path d="m5 7.5 7 5 7-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </span>
+              <span>Emails</span>
+            </span>
+          </button>
+          <button class="nav-item active" data-view="winston-reports">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 16.5V11m6 5.5V7m6 9.5v-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+              </span>
+              <span>Winston Reports</span>
+            </span>
+          </button>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m10 4-1.5 6H14l-2 10 1.5-6H10L12 4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+              </span>
+              <span>Automations</span>
+            </span>
+            <span class="sparkle">✦</span>
+          </button>
+          <button class="nav-item">
+            <span class="nav-content">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 12h12M12 6l3 3-3 3M12 18l-3-3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+              </span>
+              <span>Workflows</span>
+            </span>
+            <span class="sparkle">✦</span>
+          </button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="section-label">
+            <span class="chevron">⌃</span>
+            <span>List</span>
+          </div>
+          <button class="list-item">
+            <span class="badge-square coral"></span>
+            <span>sales-navigator</span>
+          </button>
+          <button class="list-item">
+            <span class="badge-square red"></span>
+            <span>emails-marketing-agency</span>
+          </button>
+        </div>
+      </aside>
+      <main class="content">
+        <section id="home" class="view blank active" aria-label="Home canvas"></section>
+        <section id="org-chart" class="view" aria-label="Org chart">
+          <div class="org-chart">
+            <h1>Org Chart</h1>
+            <div class="org-chart-inner">
+              <div class="node">
+                <div class="title">Sombra</div>
+                <div class="role">Chief Command Officer</div>
+              </div>
+              <div class="connector" aria-hidden="true"></div>
+              <div class="node">
+                <div class="title">Winston</div>
+                <div class="role">Data Analyst · Reports to Sombra</div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="winston-reports" class="view blank" aria-label="Winston reports canvas"></section>
+      </main>
     </div>
-    <div class="hero__copy">
-      <p class="eyebrow">INTELLIGENCE DROP</p>
-      <h1>Winston keeps Closers Consulting accountable to the numbers.</h1>
-      <p class="lede">Daily revenue, ROAS, closer output, and client health condensed into one signal so Roy moves with certainty.</p>
-      <div class="cta-row">
-        <a class="btn" href="#waitlist">Tap into the report</a>
-        <span class="note">Updated nightly at 2:00&nbsp;AM CST</span>
-      </div>
-    </div>
-  </section>
-  <section class="panel panel-black focus">
-    <div class="focus__grid">
-      <div>
-        <p class="eyebrow">WHAT YOU GET</p>
-        <h2>Pure signal: white page, black page, repeat.</h2>
-        <p>Every page alternates white/black just like the PDF. Zero fluff, just revenue flow, ad controls, closer heatmaps, and client retention risks.</p>
-      </div>
-      <ul class="focus__list">
-        <li><strong>Revenue Pulse</strong><span>Target vs actual, source mix, cash alerts.</span></li>
-        <li><strong>Closer Grid</strong><span>Calls, close rate, Marcus alerts before the leaks grow.</span></li>
-        <li><strong>Ads + Organic</strong><span>ROAS runway, creative fatigue pings, YouTube surges.</span></li>
-      </ul>
-    </div>
-  </section>
-  <section class="panel panel-white stats" id="waitlist">
-    <div class="stats__grid">
-      <div>
-        <p class="stat-label">Weekly Revenue</p>
-        <p class="stat-value">$87.4K</p>
-        <p class="stat-note">9% below target → volume fix underway.</p>
-      </div>
-      <div>
-        <p class="stat-label">Team Close Rate</p>
-        <p class="stat-value">18%</p>
-        <p class="stat-note">Baseline held while call volume dipped 14%.</p>
-      </div>
-      <div>
-        <p class="stat-label">Ad ROAS</p>
-        <p class="stat-value">2.8x</p>
-        <p class="stat-note">Three week decline flagged for creative refresh.</p>
-      </div>
-    </div>
-    <form class="waitlist">
-      <label for="email">Get the Winston Report drop</label>
-      <div class="inputs">
-        <input type="email" id="email" placeholder="you@domain.com" required />
-        <button type="submit">Request Access</button>
-      </div>
-      <p class="stat-note">We’ll reply within 24 hours with onboarding instructions.</p>
-    </form>
-  </section>
-  <section class="panel panel-black footer">
-    <h3>Designed for Roy. Sharpened nightly by Winston.</h3>
-    <p class="footer-note">Black &amp; white theme. Sharp corners only. Same energy as the internal PDF—now in HTML.</p>
-  </section>
-</main>
-</body>
+    <script>
+      const navButtons = document.querySelectorAll(".nav-item[data-view]");
+      const views = {
+        home: document.getElementById("home"),
+        "org-chart": document.getElementById("org-chart"),
+        "winston-reports": document.getElementById("winston-reports"),
+      };
+
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.view;
+          if (!target) return;
+
+          navButtons.forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+
+          Object.values(views).forEach((view) => view.classList.remove("active"));
+          const view = views[target];
+          if (view) {
+            view.classList.add("active");
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
