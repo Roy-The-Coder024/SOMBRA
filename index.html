@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CCG Command Dashboard — Mockup</title>
+    <title>Leadwave Command Console</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
@@ -34,7 +34,7 @@
         display: grid;
         grid-template-columns: 280px 1fr;
         min-height: 100vh;
-        background: radial-gradient(circle at top, rgba(44, 224, 160, 0.12), transparent 38%), #050608;
+        background: radial-gradient(circle at top, rgba(44, 224, 160, 0.12), transparent 42%), #050608;
       }
 
       .sidebar {
@@ -246,22 +246,132 @@
       }
 
       .view {
-        display: none;
         width: 100%;
         height: 100%;
+        display: none;
       }
 
       .view.active {
         display: block;
       }
 
-      .view.blank {
+      .panel {
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
         border-radius: 28px;
-        flex: 1;
+        padding: 40px;
         min-height: 520px;
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .hero h1 {
+        margin: 0 0 20px;
+        font-size: clamp(2.4rem, 4vw, 3rem);
+        letter-spacing: 0.03em;
+      }
+
+      .hero p {
+        margin: 0 0 32px;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 14px 28px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: linear-gradient(120deg, #2ce0a0, #1db6ff);
+        color: #02111b;
+        box-shadow: 0 10px 30px rgba(44, 224, 160, 0.35);
+      }
+
+      .btn.ghost {
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: transparent;
+        color: #f8fafc;
+      }
+
+      .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
+        gap: 16px;
+      }
+
+      .metric-card {
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 18px;
+        padding: 18px;
+        background: #131a26;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+
+      .metric-card span {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .metric-card strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 1.5rem;
+        letter-spacing: 0.04em;
+      }
+
+      .metric-card small {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        font-size: 0.8rem;
+        color: #2ce0a0;
+      }
+
+      .signals {
+        margin-top: 42px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 18px;
+      }
+
+      .signal-card {
+        border-radius: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: #101624;
+        padding: 18px;
+      }
+
+      .signal-card h3 {
+        margin: 0 0 6px;
+        font-size: 0.9rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: rgba(148, 163, 184, 0.75);
+      }
+
+      .signal-card p {
+        margin: 0;
+        font-size: 1rem;
       }
 
       .org-chart {
@@ -313,7 +423,7 @@
         background: rgba(84, 184, 255, 0.4);
       }
 
-      @media (max-width: 900px) {
+      @media (max-width: 1100px) {
         .app {
           grid-template-columns: 1fr;
         }
@@ -321,18 +431,18 @@
         .sidebar {
           flex-direction: row;
           gap: 16px;
-          align-items: center;
+          align-items: flex-start;
           border-right: none;
           border-bottom: 1px solid var(--sidebar-border);
-        }
-
-        nav {
-          flex-direction: row;
           flex-wrap: wrap;
         }
 
         .content {
           padding: 32px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -385,7 +495,7 @@
             <span class="chevron">⌃</span>
             <span>Records</span>
           </div>
-          <button class="nav-item" data-view="home">
+          <button class="nav-item active" data-view="home">
             <span class="nav-content">
               <span class="icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -442,7 +552,7 @@
               <span>Emails</span>
             </span>
           </button>
-          <button class="nav-item active" data-view="winston-reports">
+          <button class="nav-item" data-view="winston-reports">
             <span class="nav-content">
               <span class="icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -492,7 +602,60 @@
         </div>
       </aside>
       <main class="content">
-        <section id="home" class="view blank active" aria-label="Home canvas"></section>
+        <section id="home" class="view active" aria-label="Command dashboard">
+          <div class="panel hero">
+            <div>
+              <p style="text-transform: uppercase; letter-spacing: 0.28em; font-size: 0.78rem; color: rgba(248, 250, 252, 0.64); margin-bottom: 16px;">Winston x Leadwave</p>
+              <h1>One console for cash, ads, and closer performance.</h1>
+              <p>Every heartbeat of Closers Consulting Group in a single glass dashboard. Winston ingests Monarch, Hyros, GoHighLevel, and your scorecards nightly so the executive brief is waiting when you wake up.</p>
+              <div class="cta-row">
+                <button class="btn primary">Request Winston Report</button>
+                <button class="btn ghost">View live dashboard</button>
+              </div>
+              <div class="signals">
+                <div class="signal-card">
+                  <h3>Last sync</h3>
+                  <p>Mar 05 · 02:12 AM EST</p>
+                </div>
+                <div class="signal-card">
+                  <h3>Next pulse</h3>
+                  <p>Mar 05 · 06:00 AM EST</p>
+                </div>
+                <div class="signal-card">
+                  <h3>Gateways</h3>
+                  <p>Monarch · Hyros · GHL (OK)</p>
+                </div>
+                <div class="signal-card">
+                  <h3>Owner</h3>
+                  <p>Sombra • COO · Winston reports to her</p>
+                </div>
+              </div>
+            </div>
+            <div class="hero-metrics">
+              <div class="metric-card">
+                <span>Cash On Hand</span>
+                <strong>$428,910</strong>
+                <small>+4.2% vs last week</small>
+              </div>
+              <div class="metric-card">
+                <span>Booked Calls (7d)</span>
+                <strong>104</strong>
+                <small>Goal: 120</small>
+              </div>
+              <div class="metric-card">
+                <span>Ad ROAS</span>
+                <strong>3.4×</strong>
+                <small>Meta + YT blended</small>
+              </div>
+              <div class="metric-card">
+                <span>Closer Capacity</span>
+                <strong>78%</strong>
+                <small>Ashton team</small>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="org-chart" class="view" aria-label="Org chart">
           <div class="org-chart">
             <h1>Org Chart</h1>
@@ -509,7 +672,17 @@
             </div>
           </div>
         </section>
-        <section id="winston-reports" class="view blank" aria-label="Winston reports canvas"></section>
+
+        <section id="winston-reports" class="view" aria-label="Winston reports canvas">
+          <div class="panel" style="display:flex; align-items:center; justify-content:center; text-align:center;">
+            <div>
+              <p style="letter-spacing:0.32em; text-transform:uppercase; font-size:0.75rem; color:var(--muted);">Queue Ready</p>
+              <h2 style="margin:12px 0 8px; font-size:2rem;">Next PDF Summary</h2>
+              <p style="color:var(--muted); max-width:420px; margin:0 auto 24px;">Winston will drop the new revenue + booking report once the nightly pipeline sync completes. Trigger manually or let the pulse schedule fire.</p>
+              <button class="btn primary">Generate latest report</button>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
     <script>
